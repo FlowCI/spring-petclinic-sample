@@ -24,6 +24,6 @@ steps:
     allow_failure: true
     script: |
       echo ${SAY_HELLO} ${EXAMPLE_VAR}
-      echo 5
+      sleep 5
       echo ${SAY_HELLO} ${EXAMPLE_VAR}
       
