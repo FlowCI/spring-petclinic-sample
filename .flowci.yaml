@@ -15,7 +15,7 @@
 
 envs:
   # Define Flow level variables
-  EXAMPLE_VAR: "Hi, I'am an example YAML from git repo"
+  EXAMPLE_VAR: "Hi, I'am an example YAML from git repo develop"
 
 steps:
   - name: first_example
@@ -24,3 +24,6 @@ steps:
     allow_failure: true
     script: |
       echo ${SAY_HELLO} ${EXAMPLE_VAR}
+      echo 5
+      echo ${SAY_HELLO} ${EXAMPLE_VAR}
+      
