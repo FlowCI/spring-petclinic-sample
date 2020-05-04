@@ -1,26 +1,32 @@
-#
-# Example YAML for flow.ci
-#
-
-# Built-in environment variables
-#
-# FLOWCI_SERVER_URL:
-#
-# FLOWCI_FLOW_NAME:
-# FLOWCI_FLOW_WEBHOOK:
-#
-# FLOWCI_JOB_BUILD_NUM:
-# FLOWCI_JOB_STATUS:
-# FLOWCI_JOB_TRIGGER:
-
 envs:
-  # Define Flow level variables
-  EXAMPLE_VAR: "Hi, I'am an example YAML from git repo"
+  # Git config
+  FLOWCI_GIT_URL: "https://github.com/FlowCI/spring-petclinic-sample.git"
+  FLOWCI_GIT_BRANCH: "master"
+  FLOWCI_GIT_REPO: "spring-petclinic"
+
+  ## Credential name if git repo url is ssh or login required for http
+  # FLOWCI_GIT_CREDENTIAL: "the credentail name your created"
 
 steps:
-  - name: first_example
+  - name: clone
+    docker:
+      image: python:3.6
+    plugin: 'gitclone'
+    allow_failure: false
+
+  - name: run unit test
+    docker:
+      image: maven:3.6-jdk-8
+    plugin: 'maven-test'
+
+  - name: package
+    docker:
+      image: maven:3.6-jdk-8
+    plugin: 'maven-package'
+
+  - name: upload
+    docker:
+      image: ubuntu:18.04
     envs:
-      SAY_HELLO: "hello.flow.ci"
-    allow_failure: true
-    script: |
-      echo ${SAY_HELLO} ${EXAMPLE_VAR}
+      FLOWCI_JOB_ARTIFACT_PATH: ${FLOWCI_MAVEN_PKGS}
+    plugin: 'artifact-upload'
